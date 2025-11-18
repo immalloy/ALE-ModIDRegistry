@@ -3,6 +3,10 @@ A lightweight, engine-safe mod detection system for **ALE Psych**, created by **
 It allows any mod to detect whether other mods are installed **without creating dependencies**,  
 **without loading external code**, and **without modifying the engine source**.
 
+![ModID Registry Version](https://img.shields.io/badge/ModID%20Registry-1.0-blue)
+[![ALE Psych Engine](https://img.shields.io/badge/ALE%20Psych-Engine%20Repo-green)](https://github.com/ALE-Psych-Crew/ALE-Psych)
+
+
 ModIDRegistry reads the `modID` from every mod's `data.json` and exposes a stable API for HScript and Lua.
 
 ---
