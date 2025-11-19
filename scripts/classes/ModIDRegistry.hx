@@ -1,65 +1,54 @@
 package;
 
 import sys.FileSystem;
-import haxe.Json;
 import sys.io.File;
+
+import tjson.TJSON as Json;
 
 class ModIDRegistry
 {
-    public static var foundMods:Array<String> = [];
+    private var list:Array<String> = [];
 
-    public static function init():Void
+    public function new():Void
     {
-        foundMods = [];
+        list = [];
 
-        if (!FileSystem.exists("mods") || !FileSystem.isDirectory("mods"))
+        if (!FileSystem.exists('mods') || !FileSystem.isDirectory('mods'))
             return;
 
-        var entries = FileSystem.readDirectory("mods");
+        var entries = FileSystem.readDirectory('mods');
 
         for (folder in entries)
         {
-            var dataPath = "mods/" + folder + "/data.json";
-            //labubu
+            var dataPath = 'mods/' + folder + '/data.json';
 
             if (FileSystem.exists(dataPath))
             {
-                var content:String = null;
-                try {
-                    content = File.getContent(dataPath);
-                } catch (error:Dynamic) {
-                    trace("[ModIDRegistry] Failed reading " + dataPath + ": " + error);
-                    continue;
-                }
-
+                var content:String = File.getContent(dataPath);
+                
                 var parsed:Dynamic = null;
+
                 try {
                     parsed = Json.parse(content);
                 } catch (error:Dynamic) {
-                    trace("[ModIDRegistry] Failed parsing JSON " + dataPath + ": " + error);
+                    debugTrace('[ModIDRegistry] Failed parsing JSON ' + dataPath + ': ' + error, ERROR);
+
                     continue;
                 }
 
-                var obj = {};
-                for (f in Reflect.fields(parsed))
-                    Reflect.setField(obj, f, Reflect.field(parsed, f));
-
-                if (Reflect.hasField(obj, "modID"))
-                {
-                    var id = Std.string(Reflect.field(obj, "modID"));
-                    foundMods.push(id);
-                }
+                if (parsed.modID != null && !list.contains(parsed.modID))
+                    list.push(parsed.modID);
             }
         }
     }
 
-    public static function isInstalled(modID:String):Bool
+    public function isInstalled(modID:String):Bool
     {
-        return foundMods.indexOf(modID) != -1;
+        return list.contains(modID);
     }
 
-    public static function listMods():Array<String>
+    public function getList():Array<String>
     {
-        return foundMods;
+        return list.copy();
     }
 }

@@ -36,18 +36,6 @@ All functionality documented below applies **only to HScript**.
 
 ---
 
-## File Structure (Required for Your Mod)
-
-Your mod must include the registry inside:
-
-```
-mods/YourMod/scripts/classes/ModIDRegistry.hx
-```
-
-No other placement will work, since ALE Psych only loads classes from `scripts/classes/`.
-
----
-
 ## How It Works
 
 Every mod in ALE Psych can include a `data.json`:
@@ -80,24 +68,28 @@ trace(list);
 
 ---
 
-## Example: Enabling Story Mode Only If a Mod Exists
-
-Inside any script (e.g., `MainMenuState.hx`):
+## HScript Example
 
 ```haxe
-import modules.ModIDRegistry;
+import ModIDRegistry;
 
-var storyEnabled = ModIDRegistry.isInstalled("henrymod");
+var modRegistry:ModIDRegistry = new ModIDRegistry();
 
-if (storyEnabled)
-{
-    // show story mode button
-    // your menu logic here
-}
-else
-{
-    trace("Story mode disabled because henrymod is not installed.");
-}
+var modList:Array<String> = modRegistry.getList();
+var installedMod:String = modRegistry.isInstalled('yourModID');
+```
+
+---
+
+## Lua Example
+
+```lua
+local ModIDRegistry = require('ModIDRegistry')
+
+local modRegistry = ModIDRegistry:new()
+
+local modList = modRegistry:getList()
+local installedMod = modRegistry:isInstalled('modID')
 ```
 
 ---
