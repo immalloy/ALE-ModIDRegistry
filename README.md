@@ -1,30 +1,38 @@
 # ALE ModID Registry
-A lightweight, engine-safe mod detection system for **ALE Psych**, created by **Malloy**.  
-It allows any mod to detect whether other mods are installed **without creating dependencies**,  
+
+A lightweight, engine-safe mod detection system for **ALE Psych**, created by **Malloy**.
+It allows any mod to detect whether other mods are installed **without creating dependencies**,
 **without loading external code**, and **without modifying the engine source**.
 
 READ THE WIKI
 [ModID Registry Wiki](https://github.com/immalloy/ALE-ModIDRegistry/wiki)
 
-![ModID Registry Version](https://img.shields.io/badge/ModID%20Registry-1.0-blue)
+![ModID Registry Version](https://img.shields.io/badge/ModID%20Registry-1.1.0-blue)
 [![ALE Psych Engine](https://img.shields.io/badge/ALE%20Psych-Engine%20Repo-green)](https://github.com/ALE-Psych-Crew/ALE-Psych)
 
 <img width="1280" height="720" alt="New Project" src="https://github.com/user-attachments/assets/dbea2eae-1d65-4272-b018-22f055ad6ddd" />
 
-ModIDRegistry reads the `modID` from every mod's `data.json` and exposes a stable API for HScript and Lua.
+ModIDRegistry reads the `modID` from every mod's `data.json` and exposes a stable API for HScript.
+
+---
+
+## Important Notice About Lua Support
+
+Lua integration is **currently being reworked** and is not available in this version of the ModID Registry.
+All functionality documented below applies **only to HScript**.
 
 ---
 
 ## Features
 
-- Detect installed mods by their defined `modID`
-- Safe: no cross-mod dependencies, no required folders, no source edits
-- Works automatically on game start
-- Designed for **HScript** and **Lua** thanks to a dual interface:
-  - `ModIDRegistry.hx` (HScript module)
-  - `LuaModIDRegistry.hx` (Lua callback module)
-- Zero performance overhead
-- Compatible with any mod regardless of content
+* Detect installed mods by their defined `modID`
+* Safe: no cross-mod dependencies, no required folders, no source edits
+* Works automatically on game start
+* Designed for **HScript** using:
+
+  * `ModIDRegistry.hx` (HScript module)
+* Zero performance overhead
+* Compatible with any mod regardless of content
 
 ---
 
@@ -33,10 +41,7 @@ ModIDRegistry reads the `modID` from every mod's `data.json` and exposes a stabl
 Your mod must include the registry inside:
 
 ```
-
 mods/YourMod/scripts/classes/ModIDRegistry.hx
-mods/YourMod/scripts/classes/LuaModIDRegistry.hx
-
 ```
 
 No other placement will work, since ALE Psych only loads classes from `scripts/classes/`.
@@ -51,12 +56,12 @@ Every mod in ALE Psych can include a `data.json`:
 {
   "modID": "mycoolmod"
 }
-````
+```
 
 ModIDRegistry scans all `mods/<folder>/data.json` files and collects their `modID`.
 Then, scripts can simply ask:
 
-### **Check if a mod exists**
+### Check if a mod exists
 
 ```haxe
 import modules.ModIDRegistry;
@@ -66,7 +71,7 @@ if (ModIDRegistry.isInstalled("mycoolmod")) {
 }
 ```
 
-### **Get full list of installed mod IDs**
+### Get full list of installed mod IDs
 
 ```haxe
 var list = ModIDRegistry.getAll();
@@ -93,22 +98,6 @@ else
 {
     trace("Story mode disabled because henrymod is not installed.");
 }
-```
-
----
-
-## Lua Version Usage (LuaModIDRegistry)
-
-In Lua, the API is identical:
-
-```lua
-if ModIDRegistry.isInstalled("henrymod") then
-    debugPrint("Henry Mod installed!")
-end
-
-for _, id in ipairs(ModIDRegistry.getAll()) do
-    debugPrint("Mod detected: " .. id)
-end
 ```
 
 ---
