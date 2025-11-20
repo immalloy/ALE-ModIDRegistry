@@ -94,9 +94,3 @@ This process is **stateless**, safe, and compatible with future engine updates.
 
 Created and maintained by **Malloy**
 Special thanks to **Alejo** and the ALE Psych Team for engine-level support.
-
----
-
-## License
-
-MIT License (or whichever license your repo uses)
